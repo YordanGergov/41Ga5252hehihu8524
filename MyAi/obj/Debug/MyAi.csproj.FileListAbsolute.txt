@@ -9,3 +9,9 @@ D:\Istensko programirane\Data Structures and Algorithms\MyAi\MyAi\bin\Debug\Texa
 D:\Istensko programirane\Data Structures and Algorithms\MyAi\MyAi\obj\Debug\MyAi.dll
 D:\Istensko programirane\Data Structures and Algorithms\MyAi\MyAi\obj\Debug\MyAi.pdb
 D:\Istensko programirane\Data Structures and Algorithms\MyAi\MyAi\obj\Debug\MyAi.csprojResolveAssemblyReference.cache
+C:\Users\Martin\Downloads\MyAi\MyAi\obj\Debug\MyAi.csprojResolveAssemblyReference.cache
+C:\Users\Martin\Downloads\MyAi\MyAi\obj\Debug\MyAi.dll
+C:\Users\Martin\Downloads\MyAi\MyAi\obj\Debug\MyAi.pdb
+C:\Users\Martin\Downloads\MyAi\MyAi\bin\Debug\MyAi.dll
+C:\Users\Martin\Downloads\MyAi\MyAi\bin\Debug\MyAi.pdb
+C:\Users\Martin\Downloads\MyAi\MyAi\bin\Debug\TexasHoldem.Logic.dll

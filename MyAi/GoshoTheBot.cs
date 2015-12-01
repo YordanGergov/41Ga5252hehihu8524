@@ -29,6 +29,7 @@
             #region PreFlopLogic            
             if (context.RoundType == GameRoundType.PreFlop)
             {
+                hasTheButton = false;
                 //checks if we have the button
                 if (context.MyMoneyInTheRound == context.SmallBlind)
                 {
@@ -40,12 +41,47 @@
                 mFactor = context.MoneyLeft / (context.SmallBlind * 2) ;
                
 
-                var playHand = HandStrengthValuation.PreFlop(this.FirstCard, this.SecondCard);
+                var playHand = HandStrengthValuation.PreFlop(this.FirstCard, this.SecondCard, hasTheButton);
 
                 //all in baby; just to check how they react
-                if (mFactor < 20 && playHand == CardValuationType.Risky)
+                //if (mFactor < 20 && playHand == CardValuationType.Risky)
+                //{
+                //    return PlayerAction.Raise(context.CurrentMaxBet);
+                //}
+
+                //push or fold if under 20 blinds
+                //http://www.holdemresources.net/h/poker-theory/hune/usage.html
+                if (mFactor < 20)
                 {
-                    return PlayerAction.Raise(context.CurrentMaxBet);
+                    double nashEquillibriumRatio = 0;
+
+                    if (hasTheButton)
+                    {
+                        nashEquillibriumRatio = HandStrengthValuation.GetPusherBlindsCount(this.FirstCard, this.SecondCard);
+                    }
+                    else
+                    {
+                        nashEquillibriumRatio = HandStrengthValuation.GetCallerBlindsCount(this.FirstCard, this.SecondCard);
+                    }
+
+                    //find if we have less money then the effective stack size
+                    bool push = context.MoneyLeft <= (nashEquillibriumRatio * context.SmallBlind);
+
+                    if (push)
+                    {
+                        return PlayerAction.Raise(context.CurrentMaxBet);
+                    }
+                    else
+                    {
+                        if (context.CanCheck)
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                        else
+                        {
+                            return PlayerAction.Fold();
+                        }
+                    }
                 }
 
                 if (playHand == CardValuationType.Unplayable)
