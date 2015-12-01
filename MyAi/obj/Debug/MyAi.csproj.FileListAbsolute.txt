@@ -1,0 +1,11 @@
+c:\users\teteta\documents\visual studio 2015\Projects\MyAi\MyAi\bin\Debug\MyAi.dll
+c:\users\teteta\documents\visual studio 2015\Projects\MyAi\MyAi\bin\Debug\MyAi.pdb
+c:\users\teteta\documents\visual studio 2015\Projects\MyAi\MyAi\bin\Debug\TexasHoldem.Logic.dll
+c:\users\teteta\documents\visual studio 2015\Projects\MyAi\MyAi\obj\Debug\MyAi.dll
+c:\users\teteta\documents\visual studio 2015\Projects\MyAi\MyAi\obj\Debug\MyAi.pdb
+D:\Istensko programirane\Data Structures and Algorithms\MyAi\MyAi\bin\Debug\MyAi.dll
+D:\Istensko programirane\Data Structures and Algorithms\MyAi\MyAi\bin\Debug\MyAi.pdb
+D:\Istensko programirane\Data Structures and Algorithms\MyAi\MyAi\bin\Debug\TexasHoldem.Logic.dll
+D:\Istensko programirane\Data Structures and Algorithms\MyAi\MyAi\obj\Debug\MyAi.dll
+D:\Istensko programirane\Data Structures and Algorithms\MyAi\MyAi\obj\Debug\MyAi.pdb
+D:\Istensko programirane\Data Structures and Algorithms\MyAi\MyAi\obj\Debug\MyAi.csprojResolveAssemblyReference.cache
