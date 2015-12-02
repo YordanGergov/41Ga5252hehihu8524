@@ -34,6 +34,7 @@
 
         public override void StartHand(StartHandContext context)
         {
+           
             is3bettedPot = false;
             hasTheButton = false;
             hasTopPremium = false;
@@ -71,6 +72,7 @@
                 #region mFactor< 20
                 if (mFactor < 20)
                 {
+
                     double nashEquillibriumRatio = 0;
 
                     if (hasTheButton)
