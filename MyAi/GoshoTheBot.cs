@@ -1,4 +1,4 @@
-﻿namespace TexasHoldem.AI.SmartPlayer
+﻿namespace TexasHoldem.Logic
 {
     using System;
     using System.Collections.Generic;
