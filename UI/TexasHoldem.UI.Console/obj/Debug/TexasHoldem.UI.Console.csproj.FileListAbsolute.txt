@@ -1,2 +1,0 @@
-C:\engine\TexasHoldemGameEngine-master\Source\UI\TexasHoldem.UI.Console\bin\Debug\TexasHoldem.UI.Console.exe.config
-C:\engine\TexasHoldemGameEngine-master\Source\UI\TexasHoldem.UI.Console\obj\Debug\TexasHoldem.UI.Console.csprojResolveAssemblyReference.cache

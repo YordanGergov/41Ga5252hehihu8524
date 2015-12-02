@@ -38,6 +38,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="TexasHoldem.Logic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TexasHoldemGameEngine.1.0.0\lib\TexasHoldem.Logic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GoshoTheBot.cs" />
@@ -46,10 +50,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\engine\TexasHoldemGameEngine-master\Source\TexasHoldem.Logic\TexasHoldem.Logic.csproj">
-      <Project>{bcf99e8b-2025-444f-83c7-24542fcf33df}</Project>
-      <Name>TexasHoldem.Logic</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
