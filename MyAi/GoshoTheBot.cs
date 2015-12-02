@@ -6,15 +6,12 @@
     using TexasHoldem.Logic;
     using TexasHoldem.Logic.Extensions;
     using TexasHoldem.Logic.Players;
-    using TexasHoldem.Logic.Helpers;
-    using Logic.Cards;
-    using System.Linq;
+
 
     public class GoshoTheBot : BasePlayer
     {
         // calculation implented at start of preflop round
         // not sure if MoneyLeft property is OUR money left?!?!
-
         public static int mFactor;
         //implemented
         public static bool hasTheButton = false;
@@ -46,6 +43,7 @@
 
         public override void StartRound(StartRoundContext context)
         {
+            
             base.StartRound(context);
         }
         public override PlayerAction GetTurn(GetTurnContext context)
@@ -186,12 +184,6 @@
 
             double currentPotRaise = context.CurrentPot * 0.55;
             int currentPotRaiseInt = (int)currentPotRaise;
-
-            List<Card> Cards = new List<Card>();
-            Cards.Add(this.FirstCard);
-            Cards.Add(this.SecondCard);
-            var allCards = Cards.Concat(this.CommunityCards);
-            var bestHand = HandEvaluator.GetBestHand(allCards);
 
             if (hasTopPremium)
             {
