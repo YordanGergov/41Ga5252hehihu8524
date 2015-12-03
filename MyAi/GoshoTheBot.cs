@@ -282,7 +282,7 @@
                     else
                     {
                         //always call SmallBlinds/BigBlinds!
-                        if (context.MoneyToCall < (context.SmallBlind * 2))
+                        if (context.MoneyToCall <= (context.SmallBlind * 2))
                         {
                             return PlayerAction.CheckOrCall();
                         }
@@ -326,7 +326,7 @@
                     else
                     {
                         //always call SmallBlinds/BigBlinds!
-                        if (context.MoneyToCall < (context.SmallBlind * 2))
+                        if (context.MoneyToCall <= (context.SmallBlind * 2))
                         {
                             return PlayerAction.CheckOrCall();
                         }
