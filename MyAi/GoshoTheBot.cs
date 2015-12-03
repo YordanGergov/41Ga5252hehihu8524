@@ -196,17 +196,27 @@
             double currentPotRaise = context.CurrentPot * 0.55;
             int currentPotRaiseInt = (int)currentPotRaise;
 
-            if (hasTopPremium)
-            {
-                return PlayerAction.Raise(currentPotRaiseInt);
-            }
-
-            if (context.RoundType == GameRoundType.Turn)
+       //   if (hasTopPremium)
+       //   {
+       //       return PlayerAction.Raise(currentPotRaiseInt);
+       //   }
+       #region Flop
+            if (context.RoundType == GameRoundType.Flop)
             {
                 List<Card> allCards = new List<Card>(this.CommunityCards);
                 allCards.Add(this.FirstCard);
                 allCards.Add(this.SecondCard);
                 HandRankType type = HandEvaluator.GetBestHand(allCards).RankType;
+                if ((int)type >= (int)HandRankType.Pair && context.CanCheck)
+                {
+                    return PlayerAction.Raise(currentPotRaiseInt);
+                }
+
+                if ((int)type == (int)HandRankType.Pair && (context.MoneyToCall < currentPotRaise))
+                {
+                    return PlayerAction.CheckOrCall();
+                }
+
                 if ((int)type >= (int)HandRankType.TwoPairs)
                 {
                     return PlayerAction.Raise(currentPotRaiseInt);
@@ -220,55 +230,151 @@
 
                     else
                     {
+                        //always call SmallBlinds/BigBlinds!
+                       if (context.MoneyToCall < (context.SmallBlind * 2))
+                       {
+                           return PlayerAction.CheckOrCall();
+                       }
+
                         return PlayerAction.Fold();
                     }
                 }
             }
-            else
+            #endregion
+            #region Turn    
+            if (context.RoundType == GameRoundType.Turn)
             {
-                //always call SmallBlinds!
-                if (context.MoneyToCall == context.SmallBlind)
-                {
-                    return PlayerAction.CheckOrCall();
-                }
-
-                int ourCurrentStack = context.MoneyLeft;
-                //if the pot is bigger than our money= ALL-IN BABY!
-                if (context.CurrentPot > context.MoneyLeft && context.MoneyLeft > 0)
-                {
-                    return PlayerAction.Raise(ourCurrentStack);
-                }
-
-
-                var chanceForAction = RandomProvider.Next(1, 50);
-
-                //always bets
-                if (iniative && context.CanCheck)
+                List<Card> allCards = new List<Card>(this.CommunityCards);
+                allCards.Add(this.FirstCard);
+                allCards.Add(this.SecondCard);
+                HandRankType type = HandEvaluator.GetBestHand(allCards).RankType;
+                if ((int)type >= (int)HandRankType.Pair && context.CanCheck)
                 {
                     return PlayerAction.Raise(currentPotRaiseInt);
                 }
 
-                if (chanceForAction <= 35)
+                if ((int)type == (int)HandRankType.Pair && (context.MoneyToCall < currentPotRaise))
+                {
+                    return PlayerAction.CheckOrCall();
+                }
+
+                if ((int)type >= (int)HandRankType.TwoPairs)
                 {
                     return PlayerAction.Raise(currentPotRaiseInt);
                 }
-
-                if (chanceForAction > 35)
-                {
-                    return PlayerAction.CheckOrCall();
-                }
-
-                if (context.CanCheck)
-                {
-                    return PlayerAction.CheckOrCall();
-                }
-
                 else
                 {
-                    return PlayerAction.Fold();
+                    if (context.CanCheck)
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+
+                    else
+                    {
+                        //always call SmallBlinds/BigBlinds!
+                        if (context.MoneyToCall < (context.SmallBlind * 2))
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+
+                        return PlayerAction.Fold();
+                    }
                 }
             }
-          
+            #endregion
+
+            
+
+            #region River
+            if (context.RoundType == GameRoundType.River)
+            {
+                List<Card> allCards = new List<Card>(this.CommunityCards);
+                allCards.Add(this.FirstCard);
+                allCards.Add(this.SecondCard);
+                HandRankType type = HandEvaluator.GetBestHand(allCards).RankType;
+                if ((int)type >= (int)HandRankType.Pair && context.CanCheck)
+                {
+                    return PlayerAction.Raise(currentPotRaiseInt);
+                }
+
+                if ((int)type == (int)HandRankType.Pair && (context.MoneyToCall < currentPotRaise))
+                {
+                    return PlayerAction.CheckOrCall();
+                }
+
+                if ((int)type >= (int)HandRankType.TwoPairs)
+                {
+                    return PlayerAction.Raise(currentPotRaiseInt);
+                }
+                else
+                {
+                    if (context.CanCheck)
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+
+                    else
+                    {
+                        //always call SmallBlinds/BigBlinds!
+                        if (context.MoneyToCall < (context.SmallBlind * 2))
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+
+                        return PlayerAction.Fold();
+                    }
+                }
+            }
+            #endregion
+
+            #region OldRandomLogic
+            //redundant logic
+            //   else
+            //   {
+            //       //always call SmallBlinds!
+            //       if (context.MoneyToCall == context.SmallBlind)
+            //       {
+            //           return PlayerAction.CheckOrCall();
+            //       }
+            //
+            //       int ourCurrentStack = context.MoneyLeft;
+            //       //if the pot is bigger than our money= ALL-IN BABY!
+            //       if (context.CurrentPot > context.MoneyLeft && context.MoneyLeft > 0)
+            //       {
+            //           return PlayerAction.Raise(ourCurrentStack);
+            //       }
+            //
+            //
+            //       var chanceForAction = RandomProvider.Next(1, 50);
+            //
+            //       //always bets
+            //       if (iniative && context.CanCheck)
+            //       {
+            //           return PlayerAction.Raise(currentPotRaiseInt);
+            //       }
+            //
+            //       if (chanceForAction <= 35)
+            //       {
+            //           return PlayerAction.Raise(currentPotRaiseInt);
+            //       }
+            //
+            //       if (chanceForAction > 35)
+            //       {
+            //           return PlayerAction.CheckOrCall();
+            //       }
+            //
+            #endregion
+            if (context.CanCheck)
+                 {
+                     return PlayerAction.CheckOrCall();
+                 }
+            
+                 else
+                 {
+                     return PlayerAction.Fold();
+                 }
+       
+           
         }
         #endregion
 
