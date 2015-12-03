@@ -131,6 +131,8 @@
                     return CardValuationType.Recommended;
                 case 4:
                     return CardValuationType.Premium;
+                case 5:
+                    return CardValuationType.TopPremium;
                 default:
                     return CardValuationType.Unplayable;
             }

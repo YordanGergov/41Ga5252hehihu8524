@@ -46,8 +46,7 @@
         }
 
         public override void StartRound(StartRoundContext context)
-        {
-            
+        {            
             base.StartRound(context);
         }
         public override PlayerAction GetTurn(GetTurnContext context)
@@ -128,6 +127,7 @@
                  //   var smallBlindsTimes = RandomProvider.Next(1, 8);
                     return PlayerAction.Raise(context.SmallBlind * 6);
                 }
+
                 // folds if not in position
                 else if(playHand == CardValuationType.Risky && !hasTheButton)
                 {
@@ -172,7 +172,17 @@
                     }                    
                 }
 
-                return PlayerAction.CheckOrCall();
+            // not sure if this doesn't brake everything
+               if (context.CanCheck)
+               {
+                   return PlayerAction.CheckOrCall();
+               }
+             // not sure if this doesn't brake everything
+                else
+                {
+                    return PlayerAction.Fold();
+                }
+
             }
             #endregion
 
