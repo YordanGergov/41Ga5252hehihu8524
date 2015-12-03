@@ -5,11 +5,14 @@
     using TexasHoldem.AI.SmartPlayer.Helpers;
     using TexasHoldem.Logic;
     using TexasHoldem.Logic.Extensions;
+    using Logic.Helpers;
     using TexasHoldem.Logic.Players;
-
+    using Logic.Cards;
+    using System.Linq;
 
     public class GoshoTheBot : BasePlayer
     {
+        private static readonly IHandEvaluator HandEvaluator = new HandEvaluator();
         // calculation implented at start of preflop round
         // not sure if MoneyLeft property is OUR money left?!?!
         public static int mFactor;
@@ -175,7 +178,13 @@
 
             // This doesn't make a difference if it is FLOP, TURN or RIVER!
             #region Post-FlopLogic 
-
+            //List<Card> cards = new List<Card>();
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    cards.Add(this.FirstCard);
+            //}
+            //List<Card> myCommunityCards = new List<Card>(this.CommunityCards);
+            //HandRankType type = HandEvaluator.GetBestHand(cards).RankType;
             //i don't know what I am doing! Trying to get who has initiative; THIS CRASHES!
             //  List<string> lastActions = (List<string>)context.PreviousRoundActions;
             //  var lastPlayer = lastActions[lastActions.Count];
@@ -183,7 +192,7 @@
             //  {
             //      iniative = true;
             //  }
-
+                   
             double currentPotRaise = context.CurrentPot * 0.55;
             int currentPotRaiseInt = (int)currentPotRaise;
 
@@ -192,47 +201,74 @@
                 return PlayerAction.Raise(currentPotRaiseInt);
             }
 
-            //always call SmallBlinds!
-            if (context.MoneyToCall == context.SmallBlind)
+            if (context.RoundType == GameRoundType.Turn)
             {
-                return PlayerAction.CheckOrCall();
-            }
-          
-            int ourCurrentStack = context.MoneyLeft;
-            //if the pot is bigger than our money= ALL-IN BABY!
-            if (context.CurrentPot > context.MoneyLeft && context.MoneyLeft > 0)
-            {
-                return PlayerAction.Raise(ourCurrentStack);
-            }
+                List<Card> allCards = new List<Card>(this.CommunityCards);
+                allCards.Add(this.FirstCard);
+                allCards.Add(this.SecondCard);
+                HandRankType type = HandEvaluator.GetBestHand(allCards).RankType;
+                if ((int)type >= (int)HandRankType.TwoPairs)
+                {
+                    return PlayerAction.Raise(currentPotRaiseInt);
+                }
+                else
+                {
+                    if (context.CanCheck)
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
 
-           
-            var chanceForAction = RandomProvider.Next(1, 50);
-
-            //always bets
-            if (iniative && context.CanCheck)
-            {
-                return PlayerAction.Raise(currentPotRaiseInt);
+                    else
+                    {
+                        return PlayerAction.Fold();
+                    }
+                }
             }
-
-            if (chanceForAction <= 35)
-            {
-                return PlayerAction.Raise(currentPotRaiseInt);
-            }
-
-            if (chanceForAction > 35)
-            {
-                return PlayerAction.CheckOrCall();
-            }
-           
-            if (context.CanCheck)
-            {
-                return PlayerAction.CheckOrCall();
-            }
-
             else
             {
-                return PlayerAction.Fold();
+                //always call SmallBlinds!
+                if (context.MoneyToCall == context.SmallBlind)
+                {
+                    return PlayerAction.CheckOrCall();
+                }
+
+                int ourCurrentStack = context.MoneyLeft;
+                //if the pot is bigger than our money= ALL-IN BABY!
+                if (context.CurrentPot > context.MoneyLeft && context.MoneyLeft > 0)
+                {
+                    return PlayerAction.Raise(ourCurrentStack);
+                }
+
+
+                var chanceForAction = RandomProvider.Next(1, 50);
+
+                //always bets
+                if (iniative && context.CanCheck)
+                {
+                    return PlayerAction.Raise(currentPotRaiseInt);
+                }
+
+                if (chanceForAction <= 35)
+                {
+                    return PlayerAction.Raise(currentPotRaiseInt);
+                }
+
+                if (chanceForAction > 35)
+                {
+                    return PlayerAction.CheckOrCall();
+                }
+
+                if (context.CanCheck)
+                {
+                    return PlayerAction.CheckOrCall();
+                }
+
+                else
+                {
+                    return PlayerAction.Fold();
+                }
             }
+          
         }
         #endregion
 

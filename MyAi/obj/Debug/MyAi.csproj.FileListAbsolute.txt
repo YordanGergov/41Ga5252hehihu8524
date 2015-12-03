@@ -15,3 +15,9 @@ C:\Users\Martin\Downloads\MyAi\MyAi\obj\Debug\MyAi.pdb
 C:\Users\Martin\Downloads\MyAi\MyAi\bin\Debug\MyAi.dll
 C:\Users\Martin\Downloads\MyAi\MyAi\bin\Debug\MyAi.pdb
 C:\Users\Martin\Downloads\MyAi\MyAi\bin\Debug\TexasHoldem.Logic.dll
+C:\Users\Martin\Desktop\Git\41Ga5252hehihu8524\MyAi\bin\Debug\MyAi.dll
+C:\Users\Martin\Desktop\Git\41Ga5252hehihu8524\MyAi\bin\Debug\MyAi.pdb
+C:\Users\Martin\Desktop\Git\41Ga5252hehihu8524\MyAi\bin\Debug\TexasHoldem.Logic.dll
+C:\Users\Martin\Desktop\Git\41Ga5252hehihu8524\MyAi\obj\Debug\MyAi.csprojResolveAssemblyReference.cache
+C:\Users\Martin\Desktop\Git\41Ga5252hehihu8524\MyAi\obj\Debug\MyAi.dll
+C:\Users\Martin\Desktop\Git\41Ga5252hehihu8524\MyAi\obj\Debug\MyAi.pdb
