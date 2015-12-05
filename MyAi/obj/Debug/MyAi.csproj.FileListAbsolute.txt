@@ -21,3 +21,6 @@ C:\Users\Martin\Desktop\Git\41Ga5252hehihu8524\MyAi\bin\Debug\TexasHoldem.Logic.
 C:\Users\Martin\Desktop\Git\41Ga5252hehihu8524\MyAi\obj\Debug\MyAi.csprojResolveAssemblyReference.cache
 C:\Users\Martin\Desktop\Git\41Ga5252hehihu8524\MyAi\obj\Debug\MyAi.dll
 C:\Users\Martin\Desktop\Git\41Ga5252hehihu8524\MyAi\obj\Debug\MyAi.pdb
+C:\Users\Martin\Desktop\Git\41Ga5252hehihu8524\MyAi\bin\Debug\HandEvaluator.dll
+C:\Users\Martin\Desktop\Git\41Ga5252hehihu8524\MyAi\bin\Debug\HandEvaluator.pdb
+C:\Users\Martin\Desktop\Git\41Ga5252hehihu8524\MyAi\bin\Debug\HandEvaluator.xml

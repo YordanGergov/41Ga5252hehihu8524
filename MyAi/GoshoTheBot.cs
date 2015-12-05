@@ -29,6 +29,7 @@
         //i know there is a smarter way, but i use it for Post-Flop
         public static bool hasTopPremium = false;
 
+
         public override string Name { get; } = "Gosho" + Guid.NewGuid();
 
         public override void StartGame(StartGameContext context)
@@ -207,196 +208,286 @@
             double currentPotRaise = context.CurrentPot * 0.55;
             int currentPotRaiseInt = (int)currentPotRaise;
 
-       //   if (hasTopPremium)
-       //   {
-       //       return PlayerAction.Raise(currentPotRaiseInt);
-       //   }
-       #region Flop
-            if (context.RoundType == GameRoundType.Flop)
-            {
-                var playerFirstHand = ParseHandToString.GenerateStringFromCard(this.FirstCard);
-                var playerSecondHand = ParseHandToString.GenerateStringFromCard(this.SecondCard);
-
-                string playerHand = playerFirstHand + " " + playerSecondHand;
-                string openCards = string.Empty;
-
-                foreach (var item in this.CommunityCards)
-                {
-                    openCards += ParseHandToString.GenerateStringFromCard(item) + " ";
-                }
-
-                var chance = MonteCarloAnalysis.CalculateWinChance(playerHand, openCards.Trim());
-
-                List<Card> allCards = new List<Card>(this.CommunityCards);
-                allCards.Add(this.FirstCard);
-                allCards.Add(this.SecondCard);
-                HandRankType type = HandEvaluator.GetBestHand(allCards).RankType;
-                if ((int)type >= (int)HandRankType.Pair && context.CanCheck)
-                {
-                    return PlayerAction.Raise(currentPotRaiseInt);
-                }
-
-                if ((int)type == (int)HandRankType.Pair && (context.MoneyToCall < currentPotRaise))
-                {
-                    return PlayerAction.CheckOrCall();
-                }
-
-                if ((int)type >= (int)HandRankType.TwoPairs)
-                {
-                    return PlayerAction.Raise(currentPotRaiseInt);
-                }
-                else
-                {
-                    if (context.CanCheck)
-                    {
-                        return PlayerAction.CheckOrCall();
-                    }
-
-                    else
-                    {
-                        //always call SmallBlinds/BigBlinds!
-                       if (context.MoneyToCall <= (context.SmallBlind * 2))
-                       {
-                           return PlayerAction.CheckOrCall();
-                       }
-
-                        return PlayerAction.Fold();
-                    }
-                }
-            }
-            #endregion
-            #region Turn    
-            if (context.RoundType == GameRoundType.Turn)
-            {
-                List<Card> allCards = new List<Card>(this.CommunityCards);
-                allCards.Add(this.FirstCard);
-                allCards.Add(this.SecondCard);
-                HandRankType type = HandEvaluator.GetBestHand(allCards).RankType;
-                if ((int)type >= (int)HandRankType.Pair && context.CanCheck)
-                {
-                    return PlayerAction.Raise(currentPotRaiseInt);
-                }
-
-                if ((int)type == (int)HandRankType.Pair && (context.MoneyToCall < currentPotRaise))
-                {
-                    return PlayerAction.CheckOrCall();
-                }
-
-                if ((int)type >= (int)HandRankType.TwoPairs)
-                {
-                    return PlayerAction.Raise(currentPotRaiseInt);
-                }
-                else
-                {
-                    if (context.CanCheck)
-                    {
-                        return PlayerAction.CheckOrCall();
-                    }
-
-                    else
-                    {
-                        //always call SmallBlinds/BigBlinds!
-                        if (context.MoneyToCall <= (context.SmallBlind * 2))
-                        {
-                            return PlayerAction.CheckOrCall();
-                        }
-
-                        return PlayerAction.Fold();
-                    }
-                }
-            }
-            #endregion
-
-            
-
-            #region River
-            if (context.RoundType == GameRoundType.River)
-            {
-                List<Card> allCards = new List<Card>(this.CommunityCards);
-                allCards.Add(this.FirstCard);
-                allCards.Add(this.SecondCard);
-                HandRankType type = HandEvaluator.GetBestHand(allCards).RankType;
-                if ((int)type >= (int)HandRankType.Pair && context.CanCheck)
-                {
-                    return PlayerAction.Raise(currentPotRaiseInt);
-                }
-
-                if ((int)type == (int)HandRankType.Pair && (context.MoneyToCall < currentPotRaise))
-                {
-                    return PlayerAction.CheckOrCall();
-                }
-
-                if ((int)type >= (int)HandRankType.TwoPairs)
-                {
-                    return PlayerAction.Raise(currentPotRaiseInt);
-                }
-                else
-                {
-                    if (context.CanCheck)
-                    {
-                        return PlayerAction.CheckOrCall();
-                    }
-
-                    else
-                    {
-                        //always call SmallBlinds/BigBlinds!
-                        if (context.MoneyToCall <= (context.SmallBlind * 2))
-                        {
-                            return PlayerAction.CheckOrCall();
-                        }
-
-                        return PlayerAction.Fold();
-                    }
-                }
-            }
-            #endregion
-
-            #region OldRandomLogic
-            //redundant logic
-            //   else
+            //   if (hasTopPremium)
             //   {
-            //       //always call SmallBlinds!
-            //       if (context.MoneyToCall == context.SmallBlind)
-            //       {
-            //           return PlayerAction.CheckOrCall();
-            //       }
-            //
-            //       int ourCurrentStack = context.MoneyLeft;
-            //       //if the pot is bigger than our money= ALL-IN BABY!
-            //       if (context.CurrentPot > context.MoneyLeft && context.MoneyLeft > 0)
-            //       {
-            //           return PlayerAction.Raise(ourCurrentStack);
-            //       }
-            //
-            //
-            //       var chanceForAction = RandomProvider.Next(1, 50);
-            //
-            //       //always bets
-            //       if (iniative && context.CanCheck)
-            //       {
-            //           return PlayerAction.Raise(currentPotRaiseInt);
-            //       }
-            //
-            //       if (chanceForAction <= 35)
-            //       {
-            //           return PlayerAction.Raise(currentPotRaiseInt);
-            //       }
-            //
-            //       if (chanceForAction > 35)
-            //       {
-            //           return PlayerAction.CheckOrCall();
-            //       }
-            //
-            #endregion
-            if (context.CanCheck)
-                 {
-                     return PlayerAction.CheckOrCall();
-                 }
+            //       return PlayerAction.Raise(currentPotRaiseInt);
+            //   }
+            List<Card> allCards = new List<Card>(this.CommunityCards);
+            allCards.Add(this.FirstCard);
+            allCards.Add(this.SecondCard);
+            HandRankType type = HandEvaluator.GetBestHand(allCards).RankType;
+            var playerFirstHand = ParseHandToString.GenerateStringFromCard(this.FirstCard);
+            var playerSecondHand = ParseHandToString.GenerateStringFromCard(this.SecondCard);
+
+            string playerHand = playerFirstHand + " " + playerSecondHand;
+            string openCards = string.Empty;
+
+            foreach (var item in this.CommunityCards)
+            {
+                openCards += ParseHandToString.GenerateStringFromCard(item) + " ";
+            }
+
+            var chance = MonteCarloAnalysis.CalculateWinChance(playerHand, openCards.Trim());
+
+
+            int Check = 15;
+
+            int Raise = 60;
+
+            int AllIn = 85;
+            if (context.MoneyToCall <= (context.SmallBlind * 2))
+            {
+                return PlayerAction.CheckOrCall();
+            }
+
+            if (chance < Check)
+            {
+                return PlayerAction.Fold();
+            }
+            if (chance < Raise)
+            {
+                return PlayerAction.CheckOrCall();
+            }
+            else if (chance < AllIn)
+            {
+                if ((int)type >= (int)HandRankType.Pair)
+                {
+                    return PlayerAction.Raise(currentPotRaiseInt);
+                }
+                else
+                {
+                    return PlayerAction.Raise(context.SmallBlind * 4);
+       
+                }
+            }
+            else
+            {
+                return PlayerAction.Raise(context.CurrentMaxBet);
+            }
+        //    #region Flop
+
+        //    if (context.RoundType == GameRoundType.Flop)
+        //    { 
+
+        //        List<Card> allCards = new List<Card>(this.CommunityCards);
+        //        allCards.Add(this.FirstCard);
+        //        allCards.Add(this.SecondCard);
+        //        HandRankType type = HandEvaluator.GetBestHand(allCards).RankType;
+
+        //        if ((int)type >= (int)HandRankType.Pair && context.CanCheck)
+        //        {
+        //            return PlayerAction.Raise(currentPotRaiseInt);
+        //        }
+
+        //        if ((int)type == (int)HandRankType.Pair && (context.MoneyToCall < currentPotRaise))
+        //        {
+        //            return PlayerAction.CheckOrCall();
+        //        }
+
+        //        if ((int)type >= (int)HandRankType.TwoPairs)
+        //        {
+        //            return PlayerAction.Raise(currentPotRaiseInt);
+        //        }
+        //        else
+        //        {
+        //            if (context.CanCheck)
+        //            {
+        //                return PlayerAction.CheckOrCall();
+        //            }
+
+        //            else
+        //            {
+        //                //always call SmallBlinds/BigBlinds!
+        //               if (context.MoneyToCall <= (context.SmallBlind * 2))
+        //               {
+        //                   return PlayerAction.CheckOrCall();
+        //               }
+
+        //                return PlayerAction.Fold();
+        //            }
+        //        }
+        //    }
+        //    #endregion
+        //    #region Turn    
+        //    if (context.RoundType == GameRoundType.Turn)
+        //    {
+        //        List<Card> allCards = new List<Card>(this.CommunityCards);
+        //        allCards.Add(this.FirstCard);
+        //        allCards.Add(this.SecondCard);
+        //        HandRankType type = HandEvaluator.GetBestHand(allCards).RankType;
+        //        var playerFirstHand = ParseHandToString.GenerateStringFromCard(this.FirstCard);
+        //        var playerSecondHand = ParseHandToString.GenerateStringFromCard(this.SecondCard);
+
+        //        string playerHand = playerFirstHand + " " + playerSecondHand;
+        //        string openCards = string.Empty;
+
+        //        foreach (var item in this.CommunityCards)
+        //        {
+        //            openCards += ParseHandToString.GenerateStringFromCard(item) + " ";
+        //        }
+
+        //        var chance = MonteCarloAnalysis.CalculateWinChance(playerHand, openCards.Trim());
+
+
+        //        int Check = 15;
+
+        //        int Raise = 60;
+
+        //        int AllIn = 85;
+        //        if (context.MoneyToCall <= (context.SmallBlind * 2))
+        //        {
+        //            return PlayerAction.CheckOrCall();
+        //        }
+
+        //        if(chance < Check)
+        //        {
+        //            return PlayerAction.Fold();
+        //        }
+        //        if (chance < Raise)
+        //        {
+        //            return PlayerAction.CheckOrCall();
+        //        }
+        //        else if (chance < AllIn)
+        //        {
+        //            if ((int)type >= (int)HandRankType.Pair)
+        //            {
+        //                return PlayerAction.Raise(currentPotRaiseInt);
+        //            }
+        //            else
+        //            {
+        //                return PlayerAction.Raise(context.SmallBlind * 4);
+
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return PlayerAction.Raise(context.CurrentMaxBet);
+        //        }
+        //        //if ((int)type >= (int)HandRankType.Pair && context.CanCheck)
+        //        //{
+        //        //    return PlayerAction.Raise(currentPotRaiseInt);
+        //        //}
+
+        //        //if ((int)type == (int)HandRankType.Pair && (context.MoneyToCall < currentPotRaise))
+        //        //{
+        //        //    return PlayerAction.CheckOrCall();
+        //        //}
+
+        //        //if ((int)type >= (int)HandRankType.TwoPairs)
+        //        //{
+        //        //    return PlayerAction.Raise(currentPotRaiseInt);
+        //        //}
+        //        //else
+        //        //{
+        //        //    if (context.CanCheck)
+        //        //    {
+        //        //        return PlayerAction.CheckOrCall();
+        //        //    }
+
+        //        //    else
+        //        //    {
+        //        //        //always call SmallBlinds/BigBlinds!
+        //        //        if (context.MoneyToCall <= (context.SmallBlind * 2))
+        //        //        {
+        //        //            return PlayerAction.CheckOrCall();
+        //        //        }
+
+        //        //        return PlayerAction.Fold();
+        //        //    }
+        //        //}
+        //    }
+        //    #endregion
+
             
-                 else
-                 {
-                     return PlayerAction.Fold();
-                 }
+
+        //    #region River
+        //    if (context.RoundType == GameRoundType.River)
+        //    {
+        //        List<Card> allCards = new List<Card>(this.CommunityCards);
+        //        allCards.Add(this.FirstCard);
+        //        allCards.Add(this.SecondCard);
+        //        HandRankType type = HandEvaluator.GetBestHand(allCards).RankType;
+        //        if ((int)type >= (int)HandRankType.Pair && context.CanCheck)
+        //        {
+        //            return PlayerAction.Raise(currentPotRaiseInt);
+        //        }
+
+        //        if ((int)type == (int)HandRankType.Pair && (context.MoneyToCall < currentPotRaise))
+        //        {
+        //            return PlayerAction.CheckOrCall();
+        //        }
+
+        //        if ((int)type >= (int)HandRankType.TwoPairs)
+        //        {
+        //            return PlayerAction.Raise(currentPotRaiseInt);
+        //        }
+        //        else
+        //        {
+        //            if (context.CanCheck)
+        //            {
+        //                return PlayerAction.CheckOrCall();
+        //            }
+
+        //            else
+        //            {
+        //                //always call SmallBlinds/BigBlinds!
+        //                if (context.MoneyToCall <= (context.SmallBlind * 2))
+        //                {
+        //                    return PlayerAction.CheckOrCall();
+        //                }
+
+        //                return PlayerAction.Fold();
+        //            }
+        //        }
+        //    }
+        //    #endregion
+
+        //    #region OldRandomLogic
+        //    //redundant logic
+        //    //   else
+        //    //   {
+        //    //       //always call SmallBlinds!
+        //    //       if (context.MoneyToCall == context.SmallBlind)
+        //    //       {
+        //    //           return PlayerAction.CheckOrCall();
+        //    //       }
+        //    //
+        //    //       int ourCurrentStack = context.MoneyLeft;
+        //    //       //if the pot is bigger than our money= ALL-IN BABY!
+        //    //       if (context.CurrentPot > context.MoneyLeft && context.MoneyLeft > 0)
+        //    //       {
+        //    //           return PlayerAction.Raise(ourCurrentStack);
+        //    //       }
+        //    //
+        //    //
+        //    //       var chanceForAction = RandomProvider.Next(1, 50);
+        //    //
+        //    //       //always bets
+        //    //       if (iniative && context.CanCheck)
+        //    //       {
+        //    //           return PlayerAction.Raise(currentPotRaiseInt);
+        //    //       }
+        //    //
+        //    //       if (chanceForAction <= 35)
+        //    //       {
+        //    //           return PlayerAction.Raise(currentPotRaiseInt);
+        //    //       }
+        //    //
+        //    //       if (chanceForAction > 35)
+        //    //       {
+        //    //           return PlayerAction.CheckOrCall();
+        //    //       }
+        //    //
+        //    #endregion
+        //    if (context.CanCheck)
+        //         {
+        //             return PlayerAction.CheckOrCall();
+        //         }
+            
+        //         else
+        //         {
+        //             return PlayerAction.Fold();
+        //         }
        
            
         }
