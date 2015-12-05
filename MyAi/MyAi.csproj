@@ -47,10 +47,19 @@
     <Compile Include="GoshoTheBot.cs" />
     <Compile Include="Helpers\CardValuationType.cs" />
     <Compile Include="Helpers\HandStrengthValuation.cs" />
+    <Compile Include="Helpers\MonteCarloAnalysis.cs" />
+    <Compile Include="Helpers\ParseHandToString.cs" />
+    <Compile Include="Helpers\PlayerStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HandEvaluator\HandEvaluator.csproj">
+      <Project>{57836673-fe81-4367-a4eb-aaa46fb954d2}</Project>
+      <Name>HandEvaluator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

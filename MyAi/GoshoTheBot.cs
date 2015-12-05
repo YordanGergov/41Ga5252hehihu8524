@@ -9,6 +9,7 @@
     using TexasHoldem.Logic.Players;
     using Logic.Cards;
     using System.Linq;
+    using AI.Helpers;
 
     public class GoshoTheBot : BasePlayer
     {
@@ -213,6 +214,19 @@
        #region Flop
             if (context.RoundType == GameRoundType.Flop)
             {
+                var playerFirstHand = ParseHandToString.GenerateStringFromCard(this.FirstCard);
+                var playerSecondHand = ParseHandToString.GenerateStringFromCard(this.SecondCard);
+
+                string playerHand = playerFirstHand + " " + playerSecondHand;
+                string openCards = string.Empty;
+
+                foreach (var item in this.CommunityCards)
+                {
+                    openCards += ParseHandToString.GenerateStringFromCard(item) + " ";
+                }
+
+                var chance = MonteCarloAnalysis.CalculateWinChance(playerHand, openCards.Trim());
+
                 List<Card> allCards = new List<Card>(this.CommunityCards);
                 allCards.Add(this.FirstCard);
                 allCards.Add(this.SecondCard);
