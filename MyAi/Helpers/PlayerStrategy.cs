@@ -7,7 +7,7 @@ using TexasHoldem.Logic.Players;
 
 namespace MyAi.Helpers
 {
-    class PlayerStrategy
+    public class PlayerStrategy
     {
         public PlayerStrategy()
         {
