@@ -1,4 +1,4 @@
-# Aces of Spades Team Project
+Bot for playing texas hold'em poker.
 
 # Used Algorithms
 
